@@ -1,0 +1,86 @@
+Assignment: A3 - The Knapsack Problem
+Author: Vivian Lau (vlau02)
+Date: 10.30.2023
+-----------------------------------------------------------------------------------
+How to Run:
+-----------------------------------------------------------------------------------
+    python3 main.py
+(Note) needs user input for selecting whether to use default knapsack problem or
+    custom knapsack problem (which needs more user input for the specifics of each
+    box) and the number of generation to run the algorithm for.
+
+-----------------------------------------------------------------------------------
+Assumptions:
+-----------------------------------------------------------------------------------
+    Weight and importance value of the boxes are positive integers. 
+    ...............................................................................
+    Weight limit must also be positive integer.
+    ...............................................................................
+    ID number of boxes are associated with the order they are entered (start at 0).
+    ...............................................................................
+    Each box can only be used once.
+
+-----------------------------------------------------------------------------------
+Files:
+-----------------------------------------------------------------------------------
+        Individual.py - An individual represented by its genotype aka a possible 
+                solution comprised of different boxes for the knapsack problem.
+    ...............................................................................
+        Genetic_Algorithm.py - Genetic algorithm, a form of Local Search, which 
+                finds an optimized (but not guaranteed to be optimal) solution for 
+                the specified knapsack problem given the boxes (and their 
+                specifications) and the weight limit of the knapsack
+    ...............................................................................
+        main.py - Prompts the user for problem specifications and runs the genetic
+                algorithm for the user-specified number of generations to find a
+                optimized solution.
+
+-----------------------------------------------------------------------------------
+Genetic Algorithm Definitions:
+    Gene = one box (tuple)
+    Genotype = possible solution of boxes (an array of tuples)
+    Phenotype = total weight of all boxes in a possible solution (an integer)
+    Fitness = total importance value of all boxes in possible solution (an integer)
+    Population = possible arrangement of boxes inside the knapsack (an array of 
+        array of tuples)
+        
+    Initial Population = single boxes that are not overweight
+    Fitness Function = boxes are weighed by their total importance valued - more
+        importance is better fitness
+    Selection/Culling = Keep 50% of the population that has the best fitness
+        and reproduce rest of population with the kept individuals
+    Genetic Operations = Crossover, Mutation (adding), Mutation (swapping)
+    Solution Test = combination of boxes in a possible solution is not overweight
+    
+    (Note) More Details in Genetic Operations:
+        Crossover = all offspring occur through crossover of two parent solutions
+            where their genotype is two randomly determined portions of the two 
+            parent solutions. Because the parent solutions could overlap in their
+            use of boxes, convert the genotype (list of boxes) into a set of boxes
+            before back to list and making the child Individual.
+        Mutation (adding) = takes a list of genes (boxes) and adds a box that is 
+            currently not in the solution to the proposed solution. If no boxes
+            are missing from solution (because boxes can't be used twice), then
+            no mutation occurs.
+        Mutation (swapping) = takes a list of genes (boxes) and swaps a box that
+            is in the solution with a box that is currently not in the proposed 
+            solution. If no boxes are missing from solution (because boxes can't 
+            be used twice), then no mutation occurs.
+    
+-----------------------------------------------------------------------------------
+Solution Structure:
+
+The genetic algorithm takes in the problem specifications including the weight and 
+importance of each box and the weight limit of the knapsack before assigning number 
+IDs to each box. The initial single boxes that are not overweight serves as the 
+initial population. Each population then undergoes culling, which eliminates the
+underperforming (lesser fitness) half of the population and repopulates with the
+remaining individuals as parents. The children are made by selecting two random
+individuals from the surviving original population and crossovering their genotypes
+to create a new genotype. There is then a 20% chance of mutation occuring (10% 
+addition of new gene and 10% swapping of a gene) before the genotype is given to
+create the child Individual. This process is repeated for each generation with the
+new population. If reach the number of generation requested or population
+completely dead, halt and return the best solution found (or None if no solution).
+
+-----------------------------------------------------------------------------------
